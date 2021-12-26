@@ -1,0 +1,15 @@
+{
+    "name": "siapepfrance/sellsy-document-import",
+    "authors": [
+        {
+            "name": "Jean-Donald Roselin",
+            "email": "donniecent@live.fr"
+        }
+    ],
+    "require": {
+        "guzzlehttp/guzzle": "^7.4",
+        "symfony/dotenv": "^5.4",
+        "teknoo/sellsy-client": "2.0.8",
+        "aspera/xlsx-reader": "^0.10.1"
+    }
+}

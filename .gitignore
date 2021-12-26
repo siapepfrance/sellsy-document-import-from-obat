@@ -1,0 +1,7 @@
+/vendor/
+/treated/*
+/not-treated*
+!/**/.gitkeep
+/.env
+/.idea
+/.vcs
