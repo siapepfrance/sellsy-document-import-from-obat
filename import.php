@@ -165,7 +165,7 @@
             executeQuotationImport($row['fileName'], $row['clientId'], $row['ident'], $row['displayedDate'], $row['expireDate'], $row['subject'], $row['notes'], $row['thirdAddressId'], $row['thirdAddressId'], $row['rows'], $row['alreadyExist']);
         }
 
-        /*$invoiceList = getSellsyInvoices();
+        $invoiceList = getSellsyInvoices();
         $quotationList = getSellsyQuotations();
         $invoicesToCreate = getDocumentsToCreate('Facture', 'invoice', $clientList, $invoiceList, function($ident, $row){ return $ident === $row['ident']; }, $quotationList, function($parentIdent, $row){ return $parentIdent === $row['ident']; });
         echo sprintf('%d invoices à import<br/>', count($invoicesToCreate));
@@ -183,7 +183,7 @@
         // Credit notes
         foreach ($creditnotesToCreate as $key => $row) {
             executeCreditNoteImport($row['fileName'], $row['clientId'], $row['parentId'], $row['ident'], $row['displayedDate'], $row['expireDate'], $row['subject'], $row['notes'], $row['thirdAddressId'], $row['thirdAddressId'], $row['rows'], $row['alreadyExist']);
-        }*/
+        }
     }
 
     function getDocumentsToCreate($searchCriteria, $documentType, $clientList, $existingDocumentList, $existFunction, $parentDocumentList, $parentExistFunction) {
@@ -316,8 +316,11 @@
                 $parentDocumentList = array_filter($parentDocumentList, function ($row) use($parentExistFunction, $parentIdent) { return $parentExistFunction($parentIdent, $row); });
                 $parentDocument = count($parentDocumentList) === 1 ? $parentDocumentList[0] : null;
                 $parentExist = $parentDocument != null;
-                if ($parentExist) {
+                if ($parentExist && isset($parentDocument['docid'])) {
                     $parendId = $parentDocument['docid'];
+                } else {
+                    echo sprintf('Parent document does not exist for following %s : %s<br/><br/>', $documentType, json_encode($row));
+                    exit;
                 }
 
                 $document = [
